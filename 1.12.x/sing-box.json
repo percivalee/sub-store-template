@@ -1,139 +1,5139 @@
 {
   "dns": {
     "servers": [
-      { "tag": "google", "type": "https", "server": "https://dns.google/dns-query", "detour": "proxy" },
-      { "tag": "ali", "type": "https", "server": "https://dns.alidns.com/dns-query" },
-      { "tag": "fakeip", "type": "fakeip", "inet4_range": "198.18.0.0/15", "inet6_range": "fc00::/18" }
+      {
+        "tag": "google",
+        "address": "https://dns.google/dns-query",
+        "detour": "proxy"
+      },
+      {
+        "tag": "ali",
+        "address": "223.5.5.5"
+      },
+      {
+        "tag": "fakeip",
+        "type": "fakeip",
+        "inet4_range": "198.18.0.0/15",
+        "inet6_range": "fc00::/18"
+      }
     ],
     "rules": [
-      { "clash_mode": "Direct", "action": "route", "server": "ali" },
-      { "clash_mode": "Global", "action": "route", "server": "fakeip" },
-      { "query_type": "HTTPS", "action": "reject" },
-      { "query_type": ["A","AAAA"], "action": "route", "server": "fakeip", "rewrite_ttl": 1 },
-      { "rule_set": "cn_domain", "action": "route", "server": "ali" },
-      { "rule_set": "ai_domain", "action": "route", "server": "google" }
+      {
+        "clash_mode": "Direct",
+        "action": "route",
+        "server": "ali"
+      },
+      {
+        "clash_mode": "Global",
+        "action": "route",
+        "server": "fakeip"
+      },
+      {
+        "query_type": "HTTPS",
+        "action": "reject"
+      },
+      {
+        "query_type": [
+          "A",
+          "AAAA"
+        ],
+        "action": "route",
+        "server": "fakeip",
+        "rewrite_ttl": 1
+      },
+      {
+        "rule_set": "cn_domain",
+        "action": "route",
+        "server": "ali"
+      },
+      {
+        "rule_set": "ai_domain",
+        "action": "route",
+        "server": "google"
+      }
     ],
     "final": "google",
     "independent_cache": true
   },
   "route": {
-    "default_domain_resolver": { "server": "ali" },
+    "default_domain_resolver": {
+      "server": "ali"
+    },
     "rules": [
-      { "action": "sniff", "sniffer": ["http","tls","quic","dns"], "timeout": "500ms" },
-      { "type": "logical", "mode": "or", "rules": [ { "port": 53 }, { "protocol": "dns" } ], "action": "hijack-dns" },
-
-      { "ip_is_private": true, "action": "route", "outbound": "direct" },
-      { "clash_mode": "Global", "action": "route", "outbound": "GLOBAL" },
-      { "clash_mode": "Direct", "action": "route", "outbound": "direct" },
-
-      { "rule_set": ["youtube_domain", "spotify_domain"], "action": "route", "outbound": "国外媒体" },
-      { "rule_set": "ai_domain", "action": "route", "outbound": "ai" },
-
-      { "rule_set": "bilibili_domain", "action": "route", "outbound": "bilibili" },
-
-      { "type": "logical", "mode": "and", "rules": [
-          { "rule_set": "proxy_domain" },
-          { "invert": true, "rule_set": ["cn_domain","apple_domain","google_domain","telegram_domain","youtube_domain","spotify_domain"] }
-        ], "action": "route", "outbound": "proxy"
+      {
+        "action": "sniff",
+        "sniffer": [
+          "http",
+          "tls",
+          "quic",
+          "dns"
+        ],
+        "timeout": "500ms"
       },
-
-      { "action": "resolve" },
-
-      { "rule_set": ["telegram_ip","telegram_domain"], "action": "route", "outbound": "telegram" },
-      { "rule_set": ["google_ip","google_domain"], "action": "route", "outbound": "google" },
-      { "rule_set": ["apple_ip","apple_domain"], "action": "route", "outbound": "apple" },
-      { "rule_set": ["cn_ip","cn_domain"], "action": "route", "outbound": "cn" }
+      {
+        "type": "logical",
+        "mode": "or",
+        "rules": [
+          {
+            "port": 53
+          },
+          {
+            "protocol": "dns"
+          }
+        ],
+        "action": "hijack-dns"
+      },
+      {
+        "ip_is_private": true,
+        "action": "route",
+        "outbound": "direct"
+      },
+      {
+        "clash_mode": "Global",
+        "action": "route",
+        "outbound": "GLOBAL"
+      },
+      {
+        "clash_mode": "Direct",
+        "action": "route",
+        "outbound": "direct"
+      },
+      {
+        "rule_set": [
+          "youtube_domain",
+          "spotify_domain"
+        ],
+        "action": "route",
+        "outbound": "国外媒体"
+      },
+      {
+        "rule_set": "ai_domain",
+        "action": "route",
+        "outbound": "ai"
+      },
+      {
+        "rule_set": "bilibili_domain",
+        "action": "route",
+        "outbound": "bilibili"
+      },
+      {
+        "type": "logical",
+        "mode": "and",
+        "rules": [
+          {
+            "rule_set": "proxy_domain"
+          },
+          {
+            "invert": true,
+            "rule_set": [
+              "cn_domain",
+              "apple_domain",
+              "google_domain",
+              "telegram_domain",
+              "youtube_domain",
+              "spotify_domain"
+            ]
+          }
+        ],
+        "action": "route",
+        "outbound": "proxy"
+      },
+      {
+        "action": "resolve"
+      },
+      {
+        "rule_set": [
+          "telegram_ip",
+          "telegram_domain"
+        ],
+        "action": "route",
+        "outbound": "telegram"
+      },
+      {
+        "rule_set": [
+          "google_ip",
+          "google_domain"
+        ],
+        "action": "route",
+        "outbound": "google"
+      },
+      {
+        "rule_set": [
+          "apple_ip",
+          "apple_domain"
+        ],
+        "action": "route",
+        "outbound": "apple"
+      },
+      {
+        "rule_set": [
+          "cn_ip",
+          "cn_domain"
+        ],
+        "action": "route",
+        "outbound": "cn"
+      }
     ],
     "rule_set": [
-      { "tag": "apple_ip", "type": "remote", "format": "binary", "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geoip/apple.srs", "download_detour": "direct" },
-      { "tag": "apple_domain", "type": "remote", "format": "binary", "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/apple.srs", "download_detour": "direct" },
-      { "tag": "bilibili_domain", "type": "remote", "format": "binary", "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/bilibili.srs", "download_detour": "direct" },
-      { "tag": "cn_ip", "type": "remote", "format": "binary", "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geoip/cn.srs", "download_detour": "direct" },
-      { "tag": "cn_domain", "type": "remote", "format": "binary", "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/cn.srs", "download_detour": "direct" },
-      { "tag": "google_ip", "type": "remote", "format": "binary", "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geoip/google.srs", "download_detour": "direct" },
-      { "tag": "google_domain", "type": "remote", "format": "binary", "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/google.srs", "download_detour": "direct" },
-      { "tag": "youtube_domain", "type": "remote", "format": "binary", "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/youtube.srs", "download_detour": "direct" },
-
+      {
+        "tag": "apple_ip",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geoip/apple.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "apple_domain",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/apple.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "bilibili_domain",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/bilibili.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "cn_ip",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geoip/cn.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "cn_domain",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/cn.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "google_ip",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geoip/google.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "google_domain",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/google.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "youtube_domain",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/youtube.srs",
+        "download_detour": "direct"
+      },
       {
         "tag": "spotify_domain",
         "type": "inline",
         "rules": [
-          { "domain_suffix": "spotify.com" },
-          { "domain_suffix": "scdn.co" },
-          { "domain_suffix": "spoti.fi" }
+          {
+            "domain_suffix": "spotify.com"
+          },
+          {
+            "domain_suffix": "scdn.co"
+          },
+          {
+            "domain_suffix": "spoti.fi"
+          }
         ]
       },
-
       {
         "tag": "ai_domain",
         "type": "inline",
         "rules": [
-          { "domain_suffix": "openai.com" },
-          { "domain_suffix": "chatgpt.com" },
-          { "domain_suffix": "oaiusercontent.com" },
-          { "domain_suffix": "oaistatic.com" },
-          { "domain_suffix": "openai.azure.com" },
-
-          { "domain_suffix": "perplexity.ai" },
-          { "domain_suffix": "api.perplexity.ai" },
-          { "domain_suffix": "pplx.ai" },
-
-          { "domain_suffix": "anthropic.com" },
-          { "domain_suffix": "api.anthropic.com" },
-          { "domain_suffix": "claude.ai" },
-
-          { "domain_suffix": "openrouter.ai" },
-          { "domain_suffix": "api.openrouter.ai" },
-
-          { "domain_suffix": "x.ai" },
-          { "domain_suffix": "api.x.ai" },
-
-          { "domain_suffix": "poe.com" },
-          { "domain_suffix": "quoracdn.net" }
+          {
+            "domain_suffix": "openai.com"
+          },
+          {
+            "domain_suffix": "chatgpt.com"
+          },
+          {
+            "domain_suffix": "oaiusercontent.com"
+          },
+          {
+            "domain_suffix": "oaistatic.com"
+          },
+          {
+            "domain_suffix": "openai.azure.com"
+          },
+          {
+            "domain_suffix": "perplexity.ai"
+          },
+          {
+            "domain_suffix": "api.perplexity.ai"
+          },
+          {
+            "domain_suffix": "pplx.ai"
+          },
+          {
+            "domain_suffix": "anthropic.com"
+          },
+          {
+            "domain_suffix": "api.anthropic.com"
+          },
+          {
+            "domain_suffix": "claude.ai"
+          },
+          {
+            "domain_suffix": "openrouter.ai"
+          },
+          {
+            "domain_suffix": "api.openrouter.ai"
+          },
+          {
+            "domain_suffix": "x.ai"
+          },
+          {
+            "domain_suffix": "api.x.ai"
+          },
+          {
+            "domain_suffix": "poe.com"
+          },
+          {
+            "domain_suffix": "quoracdn.net"
+          }
         ]
       },
-
-      { "tag": "proxy_domain", "type": "remote", "format": "binary", "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geosite/geolocation-!cn.srs", "download_detour": "direct" },
-      { "tag": "telegram_ip", "type": "remote", "format": "binary", "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geoip/telegram.srs", "download_detour": "direct" },
-      { "tag": "telegram_domain", "type": "remote", "format": "binary", "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/telegram.srs", "download_detour": "direct" }
+      {
+        "tag": "proxy_domain",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geosite/geolocation-!cn.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "telegram_ip",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geoip/telegram.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "telegram_domain",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/telegram.srs",
+        "download_detour": "direct"
+      }
     ],
     "final": "final",
     "auto_detect_interface": true
   },
   "outbounds": [
-    { "tag": "proxy", "type": "selector", "outbounds": ["hk","tw","jp","sg","us","all","家宽","国外媒体","ai","direct"], "default": "all" },
-
-    { "tag": "google", "type": "selector", "outbounds": ["proxy","direct","hk","tw","jp","sg","us","all","家宽","国外媒体","ai"], "default": "proxy" },
-    { "tag": "apple", "type": "selector", "outbounds": ["proxy","direct","hk","tw","jp","sg","us","all","家宽","国外媒体","ai"], "default": "direct" },
-    { "tag": "telegram", "type": "selector", "outbounds": ["proxy","direct","hk","tw","jp","sg","us","all","家宽","国外媒体","ai"], "default": "proxy" },
-    { "tag": "bilibili", "type": "selector", "outbounds": ["proxy","direct","hk","tw","jp","sg","us","all","家宽","国外媒体","ai"], "default": "direct" },
-
-    { "tag": "国外媒体", "type": "selector", "outbounds": ["proxy","direct","hk","tw","jp","sg","us","all","家宽","ai"], "default": "proxy" },
-    { "tag": "ai", "type": "selector", "outbounds": ["proxy","direct","hk","tw","jp","sg","us","all","家宽","国外媒体"], "default": "proxy" },
-
-    { "tag": "cn", "type": "selector", "outbounds": ["proxy","direct","hk","tw","jp","sg","us","all","家宽","国外媒体","ai"], "default": "direct" },
-    { "tag": "final", "type": "selector", "outbounds": ["proxy","direct","hk","tw","jp","sg","us","all","家宽","国外媒体","ai"], "default": "proxy" },
-
-    { "tag": "hk", "type": "selector", "outbounds": [] },
-    { "tag": "tw", "type": "selector", "outbounds": [] },
-    { "tag": "jp", "type": "selector", "outbounds": [] },
-    { "tag": "sg", "type": "selector", "outbounds": [] },
-    { "tag": "us", "type": "selector", "outbounds": [] },
-    { "tag": "all", "type": "selector", "outbounds": [] },
-    { "tag": "家宽", "type": "selector", "outbounds": [] },
-
-    { "tag": "GLOBAL", "type": "selector", "outbounds": ["direct","proxy","hk","tw","jp","sg","us","all","家宽","国外媒体","ai"], "default": "direct" },
-    { "tag": "direct", "type": "direct" }
+    {
+      "tag": "proxy",
+      "type": "selector",
+      "outbounds": [
+        "hk",
+        "tw",
+        "jp",
+        "sg",
+        "us",
+        "all",
+        "家宽",
+        "国外媒体",
+        "ai",
+        "direct"
+      ],
+      "default": "all"
+    },
+    {
+      "tag": "google",
+      "type": "selector",
+      "outbounds": [
+        "proxy",
+        "direct",
+        "hk",
+        "tw",
+        "jp",
+        "sg",
+        "us",
+        "all",
+        "家宽",
+        "国外媒体",
+        "ai"
+      ],
+      "default": "proxy"
+    },
+    {
+      "tag": "apple",
+      "type": "selector",
+      "outbounds": [
+        "proxy",
+        "direct",
+        "hk",
+        "tw",
+        "jp",
+        "sg",
+        "us",
+        "all",
+        "家宽",
+        "国外媒体",
+        "ai"
+      ],
+      "default": "direct"
+    },
+    {
+      "tag": "telegram",
+      "type": "selector",
+      "outbounds": [
+        "proxy",
+        "direct",
+        "hk",
+        "tw",
+        "jp",
+        "sg",
+        "us",
+        "all",
+        "家宽",
+        "国外媒体",
+        "ai"
+      ],
+      "default": "proxy"
+    },
+    {
+      "tag": "bilibili",
+      "type": "selector",
+      "outbounds": [
+        "proxy",
+        "direct",
+        "hk",
+        "tw",
+        "jp",
+        "sg",
+        "us",
+        "all",
+        "家宽",
+        "国外媒体",
+        "ai"
+      ],
+      "default": "direct"
+    },
+    {
+      "tag": "国外媒体",
+      "type": "selector",
+      "outbounds": [
+        "proxy",
+        "direct",
+        "hk",
+        "tw",
+        "jp",
+        "sg",
+        "us",
+        "all",
+        "家宽",
+        "ai"
+      ],
+      "default": "proxy"
+    },
+    {
+      "tag": "ai",
+      "type": "selector",
+      "outbounds": [
+        "proxy",
+        "direct",
+        "hk",
+        "tw",
+        "jp",
+        "sg",
+        "us",
+        "all",
+        "家宽",
+        "国外媒体"
+      ],
+      "default": "proxy"
+    },
+    {
+      "tag": "cn",
+      "type": "selector",
+      "outbounds": [
+        "proxy",
+        "direct",
+        "hk",
+        "tw",
+        "jp",
+        "sg",
+        "us",
+        "all",
+        "家宽",
+        "国外媒体",
+        "ai"
+      ],
+      "default": "direct"
+    },
+    {
+      "tag": "final",
+      "type": "selector",
+      "outbounds": [
+        "proxy",
+        "direct",
+        "hk",
+        "tw",
+        "jp",
+        "sg",
+        "us",
+        "all",
+        "家宽",
+        "国外媒体",
+        "ai"
+      ],
+      "default": "proxy"
+    },
+    {
+      "tag": "hk",
+      "type": "selector",
+      "outbounds": [
+        "🇭🇰 香港 01丨1x HK",
+        "🇭🇰 香港 02丨1x HK",
+        "🇭🇰 香港 03丨1x HK",
+        "🇭🇰 香港家宽 01丨1x HK",
+        "🇭🇰 香港家宽 02丨1x HK",
+        "🇭🇰 香港家宽 03丨1x HK",
+        "🇭🇰 香港游戏丨2x HK",
+        "香港HKT",
+        "香港HGC",
+        "🇭🇰 HK01-E1 0.2x",
+        "🇭🇰 HK02-E2 0.2x",
+        "🇭🇰 HK03-S1 0.2x",
+        "🇭🇰 HK04-S1 0.2x",
+        "🇭🇰 HK05-GTM Peter专线",
+        "🇭🇰 HK06-GTM Oilguy专线",
+        "🇭🇰 HK07-S2",
+        "🇭🇰 HK08-S2",
+        "🇭🇰 HK09-S3",
+        "🇭🇰 HK10-S3",
+        "🇭🇰 HK11-S4",
+        "🇭🇰 HK12-S4",
+        "🇭🇰 HK-TEST",
+        "🇭🇰 HK-TEST-1"
+      ]
+    },
+    {
+      "tag": "tw",
+      "type": "selector",
+      "outbounds": [
+        "🇹🇼 台湾 01丨1x TW",
+        "🇹🇼 台湾 02丨1x TW",
+        "🇹🇼 台湾 03丨1x TW",
+        "🇹🇼 台湾家宽 01丨3x TW",
+        "🇹🇼 台湾家宽 02丨3x TW",
+        "🇹🇼 台湾家宽 03丨3x TW",
+        "[1.0x]🇨🇳 台湾|福利家宽hinet|动态ip",
+        "台湾Hinet",
+        "🇨🇳 TW01-S1 0.2x",
+        "🇨🇳 TW02-S1 0.2x",
+        "🇨🇳 TW03-S2",
+        "🇨🇳 TW04-S3",
+        "🇨🇳 TW05-S4",
+        "🇨🇳 TW06-GTM",
+        "🇨🇳 TW-TEST"
+      ]
+    },
+    {
+      "tag": "jp",
+      "type": "selector",
+      "outbounds": [
+        "🇯🇵 日本 01丨1x JP",
+        "🇯🇵 日本 02丨1x JP",
+        "🇯🇵 日本 03丨1x JP",
+        "🇯🇵 日本 04丨3x JP",
+        "🇯🇵 日本 05丨3x JP",
+        "🇯🇵 日本家宽 01丨3x JP",
+        "🇯🇵 日本家宽 02丨3x JP",
+        "🇯🇵 日本家宽 03丨3x JP",
+        "🇯🇵 日本家宽 04丨3x JP",
+        "🇯🇵 日本家宽 05丨3x JP",
+        "🇯🇵 日本家宽 06丨3x JP",
+        "🇯🇵 日本家宽 07丨3x JP",
+        "🇯🇵 日本游戏丨2x JP",
+        "🇯🇵 日本-5G网络丨10x JP",
+        "🇯🇵 日本-星链丨20x JP",
+        "[1.0xjp 日本|福利家宽softbank|动态ip",
+        "日本",
+        "🇯🇵 JP01-S1 0.2x",
+        "🇯🇵 JP02-S1 0.2x",
+        "🇯🇵 JP03-E2",
+        "🇯🇵 JP04-E4",
+        "🇯🇵 JP-TEST"
+      ]
+    },
+    {
+      "tag": "sg",
+      "type": "selector",
+      "outbounds": [
+        "🇸🇬 新加坡 01丨1x SG",
+        "🇸🇬 新加坡 02丨1x SG",
+        "🇸🇬 新加坡 03丨1x SG",
+        "🇸🇬 新加坡家宽 01丨3x SG",
+        "🇸🇬 新加坡家宽 02丨3x SG",
+        "🇸🇬 新加坡家宽 03丨3x SG",
+        "🇸🇬 新加坡家宽 04丨3x SG",
+        "🇳🇨 新喀里多尼亚丨3x NC",
+        "🇳🇿 新西兰丨2x NZ",
+        "🇳🇿 新西兰家宽丨3x NZ",
+        "🇵🇬 巴布亚新几内亚丨3x PG",
+        "当出现较长时间error时，可尝试更新订阅链接",
+        "新加坡",
+        "🇸🇬 SG01-S1 0.2x",
+        "🇸🇬 SG02-S1 0.2x",
+        "🇸🇬 SG03-S2",
+        "🇸🇬 SG04-S3",
+        "🇸🇬 SG05-S4",
+        "🇸🇬 SG06-GTM",
+        "🇸🇬 SG-TEST"
+      ]
+    },
+    {
+      "tag": "us",
+      "type": "selector",
+      "outbounds": [
+        "🇦🇲 亚美尼亚丨2x AM",
+        "🇦🇸 美属萨摩亚丨3x AS",
+        "🇺🇸 美国-费城丨1x US",
+        "🇺🇸 美国-纽约 01丨1x US",
+        "🇺🇸 美国-纽约 02丨3x US",
+        "🇺🇸 美国-洛杉矶 01丨1x US",
+        "🇺🇸 美国-洛杉矶 02丨1x US",
+        "🇺🇸 美国-洛杉矶 03丨1x US",
+        "🇺🇸 美国-洛杉矶 04丨1x US",
+        "🇺🇸 美国-盐湖城丨1x US",
+        "🇺🇸 美国-圣何塞丨5x US",
+        "🇺🇸 美国-迈阿密丨1x US",
+        "🇺🇸 美国-西雅图丨1x US",
+        "🇺🇸 美国-檀香山丨3x US",
+        "🇺🇸 美国-旧金山丨1x US",
+        "🇺🇸 美国-凤凰城丨1x US",
+        "🇺🇸 美国-达拉斯丨1x US",
+        "🇺🇸 美国-芝加哥丨1x US",
+        "🇺🇸 美国-夏洛特丨1x US",
+        "🇺🇸 美国-斯波坎丨1x US",
+        "🇺🇸 美国-阿什本丨3x US",
+        "🇺🇸 美国-巴尔的摩丨3x US",
+        "🇺🇸 美国-拉斯维加斯丨1x US",
+        "🇺🇸 美国-家宽 01丨5x US",
+        "🇺🇸 美国-家宽 02丨5x US",
+        "🇺🇸 美国-家宽 03丨5x US",
+        "🇺🇸 美国-家宽 04丨5x US",
+        "🇻🇮 美属维尔京丨3x VI",
+        "🇸🇹 圣多美和普林西比丨3x ST",
+        "[0.25x]🇺🇸 美国|流媒体节点1",
+        "[0.25x]🇺🇸 美国|流媒体节点2",
+        "[1.0x]🇺🇸 美国|家宽Hawaiiantel|三网优化",
+        "[0.2x]🇺🇸 美国|家宽Hawaiiantel",
+        "[1.0x]🇺🇸 美国|福利家宽Frontier|动态ip",
+        "美国",
+        "🇺🇸 US01-S1 0.2x",
+        "🇺🇸 US02-S1 0.2x",
+        "🇺🇸 US03-E2",
+        "🇺🇸 US04-E4",
+        "🇺🇸 US-TEST"
+      ]
+    },
+    {
+      "tag": "all",
+      "type": "selector",
+      "outbounds": [
+        "🇭🇰 香港 01丨1x HK",
+        "🇭🇰 香港 02丨1x HK",
+        "🇭🇰 香港 03丨1x HK",
+        "🇭🇰 香港家宽 01丨1x HK",
+        "🇭🇰 香港家宽 02丨1x HK",
+        "🇭🇰 香港家宽 03丨1x HK",
+        "🇭🇰 香港游戏丨2x HK",
+        "🇲🇴 澳门家宽 01丨5x MO",
+        "🇲🇴 澳门家宽 02丨5x MO",
+        "🇲🇴 澳门家宽 03丨5x MO",
+        "🇹🇼 台湾 01丨1x TW",
+        "🇹🇼 台湾 02丨1x TW",
+        "🇹🇼 台湾 03丨1x TW",
+        "🇹🇼 台湾家宽 01丨3x TW",
+        "🇹🇼 台湾家宽 02丨3x TW",
+        "🇹🇼 台湾家宽 03丨3x TW",
+        "🇸🇬 新加坡 01丨1x SG",
+        "🇸🇬 新加坡 02丨1x SG",
+        "🇸🇬 新加坡 03丨1x SG",
+        "🇸🇬 新加坡家宽 01丨3x SG",
+        "🇸🇬 新加坡家宽 02丨3x SG",
+        "🇸🇬 新加坡家宽 03丨3x SG",
+        "🇸🇬 新加坡家宽 04丨3x SG",
+        "🇲🇾 马来西亚家宽 01丨1x MY",
+        "🇲🇾 马来西亚家宽 02丨1x MY",
+        "🇲🇻 马尔代夫丨3x MV",
+        "🇰🇭 柬埔寨丨3x KH",
+        "🇹🇭 泰国 01丨3x TH",
+        "🇹🇭 泰国 02丨3x TH",
+        "🇲🇲 缅甸丨10x MM",
+        "🇱🇦 老挝丨5x LA",
+        "🇻🇳 越南家宽 01丨3x VN",
+        "🇻🇳 越南家宽 02丨3x VN",
+        "🇯🇵 日本 01丨1x JP",
+        "🇯🇵 日本 02丨1x JP",
+        "🇯🇵 日本 03丨1x JP",
+        "🇯🇵 日本 04丨3x JP",
+        "🇯🇵 日本 05丨3x JP",
+        "🇯🇵 日本家宽 01丨3x JP",
+        "🇯🇵 日本家宽 02丨3x JP",
+        "🇯🇵 日本家宽 03丨3x JP",
+        "🇯🇵 日本家宽 04丨3x JP",
+        "🇯🇵 日本家宽 05丨3x JP",
+        "🇯🇵 日本家宽 06丨3x JP",
+        "🇯🇵 日本家宽 07丨3x JP",
+        "🇯🇵 日本游戏丨2x JP",
+        "🇯🇵 日本-5G网络丨10x JP",
+        "🇯🇵 日本-星链丨20x JP",
+        "🇰🇷 韩国家宽 01丨5x KR",
+        "🇰🇷 韩国家宽 02丨5x KR",
+        "🇰🇷 韩国家宽 03丨5x KR",
+        "🇧🇹 不丹丨3x BT",
+        "🇧🇳 文莱丨5x BN",
+        "🇬🇺 关岛丨3x GU",
+        "🇲🇵 北马里亚纳群岛丨3x MP",
+        "🇫🇯 斐济丨3x FJ",
+        "🇫🇯 斐济住宅丨10x FJ",
+        "🇨🇰 库克群岛丨3x CK",
+        "🇵🇭 菲律宾丨2x PH",
+        "🇵🇭 菲律宾住宅丨10x PH",
+        "🇮🇩 印尼-棉兰丨1x ID",
+        "🇮🇩 印尼-雅加达丨1x ID",
+        "🇮🇳 印度丨1x IN",
+        "🇲🇳 蒙古丨2x MN",
+        "🇯🇴 约旦丨2x JO",
+        "🇾🇪 也门丨3x YE",
+        "🇮🇷 伊朗丨5x IR",
+        "🇧🇭 巴林丨5x BH",
+        "🇴🇲 阿曼丨3x OM",
+        "🇮🇱 以色列丨2x IL",
+        "🇵🇸 巴勒斯坦丨3x PS",
+        "🇹🇷 土耳其丨1x TR",
+        "🇳🇵 尼泊尔丨1x NP",
+        "🇹🇱 东帝汶丨3x TL",
+        "🇧🇩 孟加拉丨2x BD",
+        "🇱🇧 黎巴嫩丨5x LB",
+        "🇮🇶 伊拉克丨5x IQ",
+        "🇸🇾 叙利亚丨5x SY",
+        "🇦🇫 阿富汗丨3x AF",
+        "🇶🇦 卡塔尔丨3x QA",
+        "🇰🇼 科威特丨5x KW",
+        "🇦🇪 阿联酋丨2x AE",
+        "🇦🇪 阿联酋住宅丨5x AE",
+        "🇦🇿 阿塞拜疆丨2x AZ",
+        "🇦🇲 亚美尼亚丨2x AM",
+        "🇬🇪 格鲁吉亚丨1x GE",
+        "🇵🇰 巴基斯坦丨5x PK",
+        "🇱🇰 斯里兰卡丨10x LK",
+        "🇸🇦 沙特阿拉伯 01丨3x SA",
+        "🇸🇦 沙特阿拉伯 02丨3x SA",
+        "🇹🇲 土库曼斯坦丨3x TM",
+        "🇰🇿 哈萨克斯坦丨2x KZ",
+        "🇹🇯 塔吉克斯坦丨3x TJ",
+        "🇰🇬 吉尔吉斯斯坦丨1x KG",
+        "🇺🇿 乌兹别克斯坦丨1x UZ",
+        "🇹🇴 汤加丨3x TO",
+        "🇦🇺 澳大利亚-悉尼丨2x AU",
+        "🇦🇺 澳大利亚-墨尔本丨2x AU",
+        "🇳🇨 新喀里多尼亚丨3x NC",
+        "🇳🇿 新西兰丨2x NZ",
+        "🇳🇿 新西兰家宽丨3x NZ",
+        "🇳🇷 瑙鲁丨3x NR",
+        "🇳🇺 纽埃丨3x NU",
+        "🇵🇼 帕劳丨3x PW",
+        "🇼🇸 萨摩亚丨3x WS",
+        "🇦🇸 美属萨摩亚丨3x AS",
+        "🇹🇰 托克劳丨3x TK",
+        "🇰🇮 基里巴斯丨3x KI",
+        "🇻🇺 瓦努阿图丨3x VU",
+        "🇳🇫 诺福克岛丨3x NF",
+        "🇸🇧 所罗门群岛丨3x SB",
+        "🇲🇭 马绍尔群岛丨3x MH",
+        "🇫🇲 密克罗尼西亚丨3x FM",
+        "🇵🇫 法属波利尼西亚丨3x PF",
+        "🇵🇬 巴布亚新几内亚丨3x PG",
+        "🇼🇫 瓦利斯和富图纳丨3x WF",
+        "🇫🇷 法国 01丨1x FR",
+        "🇫🇷 法国 02丨1x FR",
+        "🇫🇷 法国住宅丨10x FR",
+        "🇬🇧 英国丨1x GB",
+        "🇬🇧 英国家宽 01丨5x GB",
+        "🇬🇧 英国家宽 02丨5x GB",
+        "🇬🇧 英国家宽 03丨3x GB",
+        "🇬🇧 英国家宽 04丨5x GB",
+        "🇮🇲 马恩岛丨3x IM",
+        "🇬🇬 根西岛丨3x GG",
+        "🇯🇪 泽西岛丨3x JE",
+        "🇩🇪 德国丨1x DE",
+        "🇩🇪 德国住宅丨5x DE",
+        "🇩🇰 丹麦丨1x DK",
+        "🇳🇴 挪威丨1x NO",
+        "🇸🇪 瑞典丨1x SE",
+        "🇫🇮 芬兰丨1x FI",
+        "🇮🇸 冰岛丨2x IS",
+        "🇨🇭 瑞士丨2x CH",
+        "🇨🇿 捷克丨1x CZ",
+        "🇬🇷 希腊丨2x GR",
+        "🇳🇱 荷兰丨1x NL",
+        "🇵🇱 波兰丨1x PL",
+        "🇲🇪 黑山丨3x ME",
+        "🇷🇺 俄罗斯丨1x RU",
+        "🇺🇦 乌克兰丨2x UA",
+        "🇭🇺 匈牙利丨1x HU",
+        "🇱🇺 卢森堡丨2x LU",
+        "🇦🇹 奥地利丨2x AT",
+        "🇮🇹 意大利丨1x IT",
+        "🇮🇹 意大利家宽丨5x IT",
+        "🇻🇦 梵蒂冈丨3x VA",
+        "🇧🇪 比利时丨1x BE",
+        "🇮🇪 爱尔兰丨2x IE",
+        "🇱🇹 立陶宛丨1x LT",
+        "🇪🇸 西班牙丨1x ES",
+        "🇵🇹 葡萄牙丨1x PT",
+        "🇦🇩 安道尔丨3x AD",
+        "🇲🇹 马耳他丨3x MT",
+        "🇲🇨 摩纳哥丨3x MC",
+        "🇧🇬 保加利亚丨1x BG",
+        "🇭🇷 克罗地亚丨2x HR",
+        "🇲🇰 北马其顿丨2x MK",
+        "🇷🇸 塞尔维亚住宅丨3x RS",
+        "🇨🇾 塞浦路斯丨1x CY",
+        "🇱🇻 拉脱维亚丨1x LV",
+        "🇲🇩 摩尔多瓦丨2x MD",
+        "🇸🇰 斯洛伐克丨1x SK",
+        "🇪🇪 爱沙尼亚丨1x EE",
+        "🇧🇾 白俄罗斯丨3x BY",
+        "🇷🇴 罗马尼亚丨1x RO",
+        "🇬🇮 直布罗陀丨3x GI",
+        "🇸🇲 圣马力诺丨3x SM",
+        "🇫🇴 法罗群岛丨3x FO",
+        "🇦🇽 奥兰群岛丨3x AX",
+        "🇸🇮 斯洛文尼亚丨2x SI",
+        "🇦🇱 阿尔巴尼亚丨1x AL",
+        "🇧🇦 波黑共和国丨2x BA",
+        "🇱🇮 列支敦士登丨3x LI",
+        "🇷🇪 法属留尼汪丨2x RE",
+        "🇺🇸 美国-费城丨1x US",
+        "🇺🇸 美国-纽约 01丨1x US",
+        "🇺🇸 美国-纽约 02丨3x US",
+        "🇺🇸 美国-洛杉矶 01丨1x US",
+        "🇺🇸 美国-洛杉矶 02丨1x US",
+        "🇺🇸 美国-洛杉矶 03丨1x US",
+        "🇺🇸 美国-洛杉矶 04丨1x US",
+        "🇺🇸 美国-盐湖城丨1x US",
+        "🇺🇸 美国-圣何塞丨5x US",
+        "🇺🇸 美国-迈阿密丨1x US",
+        "🇺🇸 美国-西雅图丨1x US",
+        "🇺🇸 美国-檀香山丨3x US",
+        "🇺🇸 美国-旧金山丨1x US",
+        "🇺🇸 美国-凤凰城丨1x US",
+        "🇺🇸 美国-达拉斯丨1x US",
+        "🇺🇸 美国-芝加哥丨1x US",
+        "🇺🇸 美国-夏洛特丨1x US",
+        "🇺🇸 美国-斯波坎丨1x US",
+        "🇺🇸 美国-阿什本丨3x US",
+        "🇺🇸 美国-巴尔的摩丨3x US",
+        "🇺🇸 美国-拉斯维加斯丨1x US",
+        "🇺🇸 美国-家宽 01丨5x US",
+        "🇺🇸 美国-家宽 02丨5x US",
+        "🇺🇸 美国-家宽 03丨5x US",
+        "🇺🇸 美国-家宽 04丨5x US",
+        "🇨🇦 加拿大-温哥华丨2x CA",
+        "🇨🇦 加拿大-温尼伯丨1x CA",
+        "🇨🇦 加拿大-多伦多丨1x CA",
+        "🇨🇦 加拿大-家宽 01丨3x CA",
+        "🇨🇦 加拿大-家宽 03丨3x CA",
+        "🇵🇲 圣皮埃尔和密克隆丨3x PM",
+        "🇲🇽 墨西哥丨3x MX",
+        "🇲🇽 墨西哥家宽丨5x MX",
+        "🇲🇽 墨西哥星链丨20x MX",
+        "🇵🇦 巴拿马丨3x PA",
+        "🇧🇲 百慕大丨3x BM",
+        "🇬🇱 格陵兰丨3x GL",
+        "🇬🇩 格林纳达丨3x GD",
+        "🇨🇷 哥斯达黎加丨1x CR",
+        "🇻🇬 英属维尔京丨3x VG",
+        "🇻🇮 美属维尔京丨3x VI",
+        "🇧🇷 巴西丨1x BR",
+        "🇨🇱 智利丨2x CL",
+        "🇵🇪 秘鲁丨5x PE",
+        "🇨🇺 古巴丨3x CU",
+        "🇭🇹 海地丨3x HT",
+        "🇦🇷 阿根廷 01丨2x AR",
+        "🇦🇷 阿根廷 02丨2x AR",
+        "🇺🇾 乌拉圭丨3x UY",
+        "🇵🇾 巴拉圭丨3x PY",
+        "🇯🇲 牙买加丨3x JM",
+        "🇸🇷 苏里南丨3x SR",
+        "🇧🇸 巴哈马丨3x BS",
+        "🇬🇾 圭亚那丨3x GY",
+        "🇬🇫 法属圭亚那丨3x GF",
+        "🇧🇿 伯利兹丨3x BZ",
+        "🇲🇸 蒙特塞拉特丨3x MS",
+        "🇦🇼 荷属阿鲁巴丨3x AW",
+        "🇨🇼 荷属库拉索丨3x CW",
+        "🇸🇽 荷属圣马丁丨3x SX",
+        "🇲🇫 法属圣马丁丨3x MF",
+        "🇧🇱 圣巴泰勒米丨3x BL",
+        "🇬🇵 法属瓜德罗普丨3x GP",
+        "🇲🇶 法属马提尼克丨3x MQ",
+        "🇦🇬 安提瓜和巴布达丨3x AG",
+        "🇰🇳 圣基茨和尼维斯丨3x KN",
+        "🇹🇹 特立尼达和多巴哥丨3x TT",
+        "🇻🇨 圣文森特和格林纳丁斯丨3x VC",
+        "🇨🇴 哥伦比亚丨3x CO",
+        "🇪🇨 厄瓜多尔丨3x EC",
+        "🇻🇪 委内瑞拉丨3x VE",
+        "🇧🇴 玻利维亚丨3x BO",
+        "🇬🇹 危地马拉丨1x GT",
+        "🇸🇻 萨尔瓦多丨1x SV",
+        "🇵🇷 波多黎各丨3x PR",
+        "🇵🇷 波多黎各住宅丨5x PR",
+        "🇰🇾 开曼群岛丨3x KY",
+        "🇭🇳 洪都拉斯丨3x HN",
+        "🇳🇮 尼加拉瓜丨3x NI",
+        "🇩🇲 多米尼克丨3x DM",
+        "🇩🇴 多米尼加丨5x DO",
+        "🇧🇧 巴巴多斯丨3x BB",
+        "🇱🇨 圣卢西亚丨3x LC",
+        "🇫🇰 福克兰群岛丨3x FK",
+        "🇹🇨 特克斯和凯科斯群岛丨3x TC",
+        "🇪🇬 埃及丨3x EG",
+        "🇬🇭 加纳丨3x GH",
+        "🇹🇬 多哥丨3x TG",
+        "🇿🇦 南非 01丨1x ZA",
+        "🇿🇦 南非 02丨1x ZA",
+        "🇧🇯 贝宁丨3x BJ",
+        "🇸🇩 苏丹丨3x SD",
+        "🇲🇱 马里丨3x ML",
+        "🇨🇬 刚果（布）丨3x CG",
+        "🇨🇩 刚果（金）丨3x CD",
+        "🇬🇦 加蓬丨3x GA",
+        "🇹🇩 乍得丨3x TD",
+        "🇲🇦 摩洛哥丨3x MA",
+        "🇹🇳 突尼斯丨2x TN",
+        "🇱🇾 利比亚丨3x LY",
+        "🇰🇪 肯尼亚丨1x KE",
+        "🇷🇼 卢旺达丨2x RW",
+        "🇨🇻 佛得角丨3x CV",
+        "🇦🇴 安哥拉丨3x AO",
+        "🇨🇲 喀麦隆丨3x CM",
+        "🇧🇮 布隆迪丨3x BI",
+        "🇸🇴 索马里丨3x SO",
+        "🇩🇯 吉布提丨3x DJ",
+        "🇬🇲 冈比亚丨3x GM",
+        "🇬🇳 几内亚丨3x GN",
+        "🇱🇸 莱索托丨3x LS",
+        "🇲🇼 马拉维丨3x MW",
+        "🇳🇪 尼日尔丨3x NE",
+        "🇺🇬 乌干达丨3x UG",
+        "🇾🇹 马约特丨3x YT",
+        "🇿🇲 赞比亚丨3x ZM",
+        "🇸🇸 南苏丹丨3x SS",
+        "🇸🇨 塞舌尔丨3x SC",
+        "🇰🇲 科摩罗丨3x KM",
+        "🇳🇬 尼日利亚丨2x NG",
+        "🇳🇬 尼日利亚住宅丨5x NG",
+        "🇲🇿 莫桑比克丨3x MZ",
+        "🇲🇺 毛里求斯丨2x MU",
+        "🇨🇮 科特迪瓦丨3x CI",
+        "🇹🇿 坦桑尼亚丨5x TZ",
+        "🇿🇼 津巴布韦丨3x ZW",
+        "🇸🇳 塞内加尔丨3x SN",
+        "🇧🇼 博茨瓦纳丨3x BW",
+        "🇳🇦 纳米比亚丨3x NA",
+        "🇸🇱 塞拉利昂丨3x SL",
+        "🇸🇿 斯威士兰丨3x SZ",
+        "🇱🇷 利比里亚丨3x LR",
+        "🇩🇿 阿尔及利亚丨3x DZ",
+        "🇲🇬 马达加斯加丨3x MG",
+        "🇬🇶 赤道几内亚丨3x GQ",
+        "🇧🇫 布基纳法索丨3x BF",
+        "🇪🇷 厄立特里亚丨3x ER",
+        "🇪🇹 埃塞俄比亚丨3x ET",
+        "🇲🇷 毛里塔尼亚丨3x MR",
+        "🇨🇫 中非共和国丨3x CF",
+        "🇬🇼 几内亚比绍丨3x GW",
+        "🇸🇹 圣多美和普林西比丨3x ST",
+        "🇦🇶 南极洲丨3x AQ",
+        "🇨🇳 中国大陆丨3x CN",
+        "剩余流量：199.71 GB",
+        "距离下次重置剩余：18 天",
+        "套餐到期：2025-10-14",
+        "[0.25x]🇺🇸 美国|流媒体节点1",
+        "[0.25x]🇺🇸 美国|流媒体节点2",
+        "[1.0x]🇺🇸 美国|家宽Hawaiiantel|三网优化",
+        "[0.2x]🇺🇸 美国|家宽Hawaiiantel",
+        "[1.0x]🇺🇸 美国|福利家宽Frontier|动态ip",
+        "[1.0xjp 日本|福利家宽softbank|动态ip",
+        "[1.0x]🇨🇳 台湾|福利家宽hinet|动态ip",
+        "[1.0x]英国|福利家宽",
+        "当出现较长时间error时，可尝试更新订阅链接",
+        "香港HKT",
+        "香港HGC",
+        "台湾Hinet",
+        "新加坡",
+        "日本",
+        "美国",
+        "🇭🇰 HK01-E1 0.2x",
+        "🇭🇰 HK02-E2 0.2x",
+        "🇭🇰 HK03-S1 0.2x",
+        "🇭🇰 HK04-S1 0.2x",
+        "🇭🇰 HK05-GTM Peter专线",
+        "🇭🇰 HK06-GTM Oilguy专线",
+        "🇭🇰 HK07-S2",
+        "🇭🇰 HK08-S2",
+        "🇭🇰 HK09-S3",
+        "🇭🇰 HK10-S3",
+        "🇭🇰 HK11-S4",
+        "🇭🇰 HK12-S4",
+        "🇸🇬 SG01-S1 0.2x",
+        "🇸🇬 SG02-S1 0.2x",
+        "🇸🇬 SG03-S2",
+        "🇸🇬 SG04-S3",
+        "🇸🇬 SG05-S4",
+        "🇸🇬 SG06-GTM",
+        "🇯🇵 JP01-S1 0.2x",
+        "🇯🇵 JP02-S1 0.2x",
+        "🇯🇵 JP03-E2",
+        "🇯🇵 JP04-E4",
+        "🇺🇸 US01-S1 0.2x",
+        "🇺🇸 US02-S1 0.2x",
+        "🇺🇸 US03-E2",
+        "🇺🇸 US04-E4",
+        "🇨🇳 TW01-S1 0.2x",
+        "🇨🇳 TW02-S1 0.2x",
+        "🇨🇳 TW03-S2",
+        "🇨🇳 TW04-S3",
+        "🇨🇳 TW05-S4",
+        "🇨🇳 TW06-GTM",
+        "🇰🇷 KR01-E1",
+        "🇰🇷 KR02-E2",
+        "🇭🇰 HK-TEST",
+        "🇯🇵 JP-TEST",
+        "🇩🇪 DE-TEST 5x",
+        "🇺🇸 US-TEST",
+        "🇸🇬 SG-TEST",
+        "🇳🇱 NL-TEST 5x",
+        "🇨🇳 TW-TEST",
+        "🇰🇷 KR-TEST",
+        "🇭🇰 HK-TEST-1"
+      ]
+    },
+    {
+      "tag": "家宽",
+      "type": "selector",
+      "outbounds": [
+        "🇭🇰 香港家宽 01丨1x HK",
+        "🇭🇰 香港家宽 02丨1x HK",
+        "🇭🇰 香港家宽 03丨1x HK",
+        "🇲🇴 澳门家宽 01丨5x MO",
+        "🇲🇴 澳门家宽 02丨5x MO",
+        "🇲🇴 澳门家宽 03丨5x MO",
+        "🇹🇼 台湾家宽 01丨3x TW",
+        "🇹🇼 台湾家宽 02丨3x TW",
+        "🇹🇼 台湾家宽 03丨3x TW",
+        "🇸🇬 新加坡家宽 01丨3x SG",
+        "🇸🇬 新加坡家宽 02丨3x SG",
+        "🇸🇬 新加坡家宽 03丨3x SG",
+        "🇸🇬 新加坡家宽 04丨3x SG",
+        "🇲🇾 马来西亚家宽 01丨1x MY",
+        "🇲🇾 马来西亚家宽 02丨1x MY",
+        "🇻🇳 越南家宽 01丨3x VN",
+        "🇻🇳 越南家宽 02丨3x VN",
+        "🇯🇵 日本家宽 01丨3x JP",
+        "🇯🇵 日本家宽 02丨3x JP",
+        "🇯🇵 日本家宽 03丨3x JP",
+        "🇯🇵 日本家宽 04丨3x JP",
+        "🇯🇵 日本家宽 05丨3x JP",
+        "🇯🇵 日本家宽 06丨3x JP",
+        "🇯🇵 日本家宽 07丨3x JP",
+        "🇰🇷 韩国家宽 01丨5x KR",
+        "🇰🇷 韩国家宽 02丨5x KR",
+        "🇰🇷 韩国家宽 03丨5x KR",
+        "🇳🇿 新西兰家宽丨3x NZ",
+        "🇬🇧 英国家宽 01丨5x GB",
+        "🇬🇧 英国家宽 02丨5x GB",
+        "🇬🇧 英国家宽 03丨3x GB",
+        "🇬🇧 英国家宽 04丨5x GB",
+        "🇮🇹 意大利家宽丨5x IT",
+        "🇺🇸 美国-家宽 01丨5x US",
+        "🇺🇸 美国-家宽 02丨5x US",
+        "🇺🇸 美国-家宽 03丨5x US",
+        "🇺🇸 美国-家宽 04丨5x US",
+        "🇨🇦 加拿大-家宽 01丨3x CA",
+        "🇨🇦 加拿大-家宽 03丨3x CA",
+        "🇲🇽 墨西哥家宽丨5x MX",
+        "[1.0x]🇺🇸 美国|家宽Hawaiiantel|三网优化",
+        "[0.2x]🇺🇸 美国|家宽Hawaiiantel",
+        "[1.0x]🇺🇸 美国|福利家宽Frontier|动态ip",
+        "[1.0xjp 日本|福利家宽softbank|动态ip",
+        "[1.0x]🇨🇳 台湾|福利家宽hinet|动态ip",
+        "[1.0x]英国|福利家宽"
+      ]
+    },
+    {
+      "tag": "GLOBAL",
+      "type": "selector",
+      "outbounds": [
+        "direct",
+        "proxy",
+        "hk",
+        "tw",
+        "jp",
+        "sg",
+        "us",
+        "all",
+        "家宽",
+        "国外媒体",
+        "ai"
+      ],
+      "default": "direct"
+    },
+    {
+      "tag": "direct",
+      "type": "direct"
+    },
+    {
+      "tag": "🇭🇰 香港 01丨1x HK",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12022,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇭🇰 香港 02丨1x HK",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12023,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇭🇰 香港 03丨1x HK",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12024,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇭🇰 香港家宽 01丨1x HK",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12729,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇭🇰 香港家宽 02丨1x HK",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 13105,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇭🇰 香港家宽 03丨1x HK",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 13115,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇭🇰 香港游戏丨2x HK",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12312,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇴 澳门家宽 01丨5x MO",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 19527,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇴 澳门家宽 02丨5x MO",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20032,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇴 澳门家宽 03丨5x MO",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20063,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇹🇼 台湾 01丨1x TW",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12304,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇹🇼 台湾 02丨1x TW",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12305,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇹🇼 台湾 03丨1x TW",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12306,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇹🇼 台湾家宽 01丨3x TW",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20036,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇹🇼 台湾家宽 02丨3x TW",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20037,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇹🇼 台湾家宽 03丨3x TW",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20038,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇬 新加坡 01丨1x SG",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12000,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇬 新加坡 02丨1x SG",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12002,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇬 新加坡 03丨1x SG",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12003,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇬 新加坡家宽 01丨3x SG",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12726,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇬 新加坡家宽 02丨3x SG",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 13116,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇬 新加坡家宽 03丨3x SG",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 13132,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇬 新加坡家宽 04丨3x SG",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20039,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇾 马来西亚家宽 01丨1x MY",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12727,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇾 马来西亚家宽 02丨1x MY",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 13182,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇻 马尔代夫丨3x MV",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20066,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇰🇭 柬埔寨丨3x KH",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12701,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇹🇭 泰国 01丨3x TH",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20054,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇹🇭 泰国 02丨3x TH",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20059,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇲 缅甸丨10x MM",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 13137,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇱🇦 老挝丨5x LA",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 13138,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇻🇳 越南家宽 01丨3x VN",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12700,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇻🇳 越南家宽 02丨3x VN",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20153,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇯🇵 日本 01丨1x JP",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 12011,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇯🇵 日本 02丨1x JP",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 12010,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇯🇵 日本 03丨1x JP",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 12012,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇯🇵 日本 04丨3x JP",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13235,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇯🇵 日本 05丨3x JP",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13269,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇯🇵 日本家宽 01丨3x JP",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13101,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇯🇵 日本家宽 02丨3x JP",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13221,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇯🇵 日本家宽 03丨3x JP",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13240,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇯🇵 日本家宽 04丨3x JP",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13241,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇯🇵 日本家宽 05丨3x JP",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13242,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇯🇵 日本家宽 06丨3x JP",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13272,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇯🇵 日本家宽 07丨3x JP",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13273,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇯🇵 日本游戏丨2x JP",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13024,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇯🇵 日本-5G网络丨10x JP",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13282,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇯🇵 日本-星链丨20x JP",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13278,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇰🇷 韩国家宽 01丨5x KR",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 50017,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇰🇷 韩国家宽 02丨5x KR",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 50016,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇰🇷 韩国家宽 03丨5x KR",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 50015,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇧🇹 不丹丨3x BT",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20072,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇧🇳 文莱丨5x BN",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20040,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇺 关岛丨3x GU",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20115,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇵 北马里亚纳群岛丨3x MP",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20127,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇫🇯 斐济丨3x FJ",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20171,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇫🇯 斐济住宅丨10x FJ",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 13185,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇰 库克群岛丨3x CK",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20158,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇵🇭 菲律宾丨2x PH",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12406,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇵🇭 菲律宾住宅丨10x PH",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20057,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇮🇩 印尼-棉兰丨1x ID",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12300,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇮🇩 印尼-雅加达丨1x ID",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12301,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇮🇳 印度丨1x IN",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12302,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇳 蒙古丨2x MN",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12328,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇯🇴 约旦丨2x JO",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12708,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇾🇪 也门丨3x YE",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20052,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇮🇷 伊朗丨5x IR",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12707,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇧🇭 巴林丨5x BH",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20056,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇴🇲 阿曼丨3x OM",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 13135,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇮🇱 以色列丨2x IL",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13147,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇵🇸 巴勒斯坦丨3x PS",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13158,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇹🇷 土耳其丨1x TR",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12603,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇳🇵 尼泊尔丨1x NP",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12720,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇹🇱 东帝汶丨3x TL",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20030,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇧🇩 孟加拉丨2x BD",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12724,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇱🇧 黎巴嫩丨5x LB",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13123,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇮🇶 伊拉克丨5x IQ",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13124,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇾 叙利亚丨5x SY",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13126,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇦🇫 阿富汗丨3x AF",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20078,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇶🇦 卡塔尔丨3x QA",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 13181,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇰🇼 科威特丨5x KW",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13170,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇦🇪 阿联酋丨2x AE",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13174,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇦🇪 阿联酋住宅丨5x AE",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20173,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇦🇿 阿塞拜疆丨2x AZ",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12606,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇦🇲 亚美尼亚丨2x AM",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12737,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇪 格鲁吉亚丨1x GE",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13178,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇵🇰 巴基斯坦丨5x PK",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12605,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇱🇰 斯里兰卡丨10x LK",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20043,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇦 沙特阿拉伯 01丨3x SA",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13175,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇦 沙特阿拉伯 02丨3x SA",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20044,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇹🇲 土库曼斯坦丨3x TM",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20051,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇰🇿 哈萨克斯坦丨2x KZ",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12602,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇹🇯 塔吉克斯坦丨3x TJ",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13192,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇰🇬 吉尔吉斯斯坦丨1x KG",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13120,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇿 乌兹别克斯坦丨1x UZ",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20025,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇹🇴 汤加丨3x TO",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20086,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇦🇺 澳大利亚-悉尼丨2x AU",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12324,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇦🇺 澳大利亚-墨尔本丨2x AU",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12401,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇳🇨 新喀里多尼亚丨3x NC",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20132,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇳🇿 新西兰丨2x NZ",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 12326,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇳🇿 新西兰家宽丨3x NZ",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20023,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇳🇷 瑙鲁丨3x NR",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20134,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇳🇺 纽埃丨3x NU",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20135,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇵🇼 帕劳丨3x PW",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20137,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇼🇸 萨摩亚丨3x WS",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20114,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇦🇸 美属萨摩亚丨3x AS",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20176,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇹🇰 托克劳丨3x TK",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20145,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇰🇮 基里巴斯丨3x KI",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20121,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇻🇺 瓦努阿图丨3x VU",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20149,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇳🇫 诺福克岛丨3x NF",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20162,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇧 所罗门群岛丨3x SB",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20053,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇭 马绍尔群岛丨3x MH",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20126,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇫🇲 密克罗尼西亚丨3x FM",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20160,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇵🇫 法属波利尼西亚丨3x PF",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20136,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇵🇬 巴布亚新几内亚丨3x PG",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20087,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇼🇫 瓦利斯和富图纳丨3x WF",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20150,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇫🇷 法国 01丨1x FR",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12621,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇫🇷 法国 02丨1x FR",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13191,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇫🇷 法国住宅丨10x FR",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13151,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇧 英国丨1x GB",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12710,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇧 英国家宽 01丨5x GB",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13177,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇧 英国家宽 02丨5x GB",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13152,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇧 英国家宽 03丨3x GB",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13186,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇧 英国家宽 04丨5x GB",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13187,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇮🇲 马恩岛丨3x IM",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20167,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇬 根西岛丨3x GG",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20117,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇯🇪 泽西岛丨3x JE",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20120,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇩🇪 德国丨1x DE",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12619,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇩🇪 德国住宅丨5x DE",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13190,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇩🇰 丹麦丨1x DK",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12608,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇳🇴 挪威丨1x NO",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12610,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇪 瑞典丨1x SE",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12611,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇫🇮 芬兰丨1x FI",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12609,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇮🇸 冰岛丨2x IS",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12607,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇭 瑞士丨2x CH",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12630,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇿 捷克丨1x CZ",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12613,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇷 希腊丨2x GR",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12615,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇳🇱 荷兰丨1x NL",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12622,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇵🇱 波兰丨1x PL",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12261,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇪 黑山丨3x ME",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20079,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇷🇺 俄罗斯丨1x RU",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13122,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇦 乌克兰丨2x UA",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12614,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇭🇺 匈牙利丨1x HU",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12631,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇱🇺 卢森堡丨2x LU",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12629,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇦🇹 奥地利丨2x AT",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12628,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇮🇹 意大利丨1x IT",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12616,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇮🇹 意大利家宽丨5x IT",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13149,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇻🇦 梵蒂冈丨3x VA",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20075,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇧🇪 比利时丨1x BE",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12618,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇮🇪 爱尔兰丨2x IE",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12617,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇱🇹 立陶宛丨1x LT",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12652,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇪🇸 西班牙丨1x ES",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12625,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇵🇹 葡萄牙丨1x PT",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12624,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇦🇩 安道尔丨3x AD",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12738,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇹 马耳他丨3x MT",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12743,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇨 摩纳哥丨3x MC",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20088,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇧🇬 保加利亚丨1x BG",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12634,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇭🇷 克罗地亚丨2x HR",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12646,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇰 北马其顿丨2x MK",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12645,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇷🇸 塞尔维亚住宅丨3x RS",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12647,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇾 塞浦路斯丨1x CY",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12654,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇱🇻 拉脱维亚丨1x LV",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12649,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇩 摩尔多瓦丨2x MD",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12651,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇰 斯洛伐克丨1x SK",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12650,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇪🇪 爱沙尼亚丨1x EE",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12635,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇧🇾 白俄罗斯丨3x BY",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12633,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇷🇴 罗马尼亚丨1x RO",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12641,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇮 直布罗陀丨3x GI",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20080,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇲 圣马力诺丨3x SM",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20073,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇫🇴 法罗群岛丨3x FO",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20076,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇦🇽 奥兰群岛丨3x AX",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20089,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇮 斯洛文尼亚丨2x SI",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12653,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇦🇱 阿尔巴尼亚丨1x AL",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12642,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇧🇦 波黑共和国丨2x BA",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12643,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇱🇮 列支敦士登丨3x LI",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20165,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇷🇪 法属留尼汪丨2x RE",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13176,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-费城丨1x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13110,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-纽约 01丨1x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13006,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-纽约 02丨3x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13284,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-洛杉矶 01丨1x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13007,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-洛杉矶 02丨1x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13010,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-洛杉矶 03丨1x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 12706,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-洛杉矶 04丨1x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13277,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-盐湖城丨1x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13271,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-圣何塞丨5x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13107,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-迈阿密丨1x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13109,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-西雅图丨1x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13111,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-檀香山丨3x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13108,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-旧金山丨1x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13113,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-凤凰城丨1x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13287,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-达拉斯丨1x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13267,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-芝加哥丨1x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13253,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-夏洛特丨1x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13257,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-斯波坎丨1x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13266,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-阿什本丨3x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13285,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-巴尔的摩丨3x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13288,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-拉斯维加斯丨1x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13268,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-家宽 01丨5x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13114,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-家宽 02丨5x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13227,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-家宽 03丨5x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13228,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇸 美国-家宽 04丨5x US",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13213,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇦 加拿大-温哥华丨2x CA",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13001,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇦 加拿大-温尼伯丨1x CA",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13000,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇦 加拿大-多伦多丨1x CA",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13200,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇦 加拿大-家宽 01丨3x CA",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13117,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇦 加拿大-家宽 03丨3x CA",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13270,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇵🇲 圣皮埃尔和密克隆丨3x PM",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20138,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇽 墨西哥丨3x MX",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13004,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇽 墨西哥家宽丨5x MX",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13280,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇽 墨西哥星链丨20x MX",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13289,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇵🇦 巴拿马丨3x PA",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 12704,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇧🇲 百慕大丨3x BM",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20083,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇱 格陵兰丨3x GL",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20074,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇩 格林纳达丨3x GD",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20116,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇷 哥斯达黎加丨1x CR",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 12719,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇻🇬 英属维尔京丨3x VG",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20090,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇻🇮 美属维尔京丨3x VI",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20091,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇧🇷 巴西丨1x BR",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13103,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇱 智利丨2x CL",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13104,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇵🇪 秘鲁丨5x PE",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13016,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇺 古巴丨3x CU",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20081,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇭🇹 海地丨3x HT",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20092,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇦🇷 阿根廷 01丨2x AR",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13015,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇦🇷 阿根廷 02丨2x AR",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13211,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇾 乌拉圭丨3x UY",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 12715,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇵🇾 巴拉圭丨3x PY",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13245,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇯🇲 牙买加丨3x JM",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20093,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇷 苏里南丨3x SR",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20104,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇧🇸 巴哈马丨3x BS",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13254,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇾 圭亚那丨3x GY",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20168,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇫 法属圭亚那丨3x GF",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13251,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇧🇿 伯利兹丨3x BZ",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20094,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇸 蒙特塞拉特丨3x MS",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20129,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇦🇼 荷属阿鲁巴丨3x AW",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20084,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇼 荷属库拉索丨3x CW",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13115,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇽 荷属圣马丁丨3x SX",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20141,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇫 法属圣马丁丨3x MF",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20125,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇧🇱 圣巴泰勒米丨3x BL",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20156,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇵 法属瓜德罗普丨3x GP",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20095,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇶 法属马提尼克丨3x MQ",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13279,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇦🇬 安提瓜和巴布达丨3x AG",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20082,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇰🇳 圣基茨和尼维斯丨3x KN",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20122,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇹🇹 特立尼达和多巴哥丨3x TT",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13252,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇻🇨 圣文森特和格林纳丁斯丨3x VC",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20148,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇴 哥伦比亚丨3x CO",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13246,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇪🇨 厄瓜多尔丨3x EC",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13106,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇻🇪 委内瑞拉丨3x VE",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20155,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇧🇴 玻利维亚丨3x BO",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20169,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇹 危地马拉丨1x GT",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13218,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇻 萨尔瓦多丨1x SV",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13281,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇵🇷 波多黎各丨3x PR",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20170,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇵🇷 波多黎各住宅丨5x PR",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13219,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇰🇾 开曼群岛丨3x KY",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20096,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇭🇳 洪都拉斯丨3x HN",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13237,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇳🇮 尼加拉瓜丨3x NI",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20163,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇩🇲 多米尼克丨3x DM",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20097,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇩🇴 多米尼加丨5x DO",
+      "type": "shadowsocks",
+      "server": "etnnq8zl.epicgames.ink",
+      "server_port": 13290,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇧🇧 巴巴多斯丨3x BB",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20067,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇱🇨 圣卢西亚丨3x LC",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20123,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇫🇰 福克兰群岛丨3x FK",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20159,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇹🇨 特克斯和凯科斯群岛丨3x TC",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20143,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇪🇬 埃及丨3x EG",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12718,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇭 加纳丨3x GH",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13188,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇹🇬 多哥丨3x TG",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13137,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇿🇦 南非 01丨1x ZA",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12036,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇿🇦 南非 02丨1x ZA",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13189,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇧🇯 贝宁丨3x BJ",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20099,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇩 苏丹丨3x SD",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20077,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇱 马里丨3x ML",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20071,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇬 刚果（布）丨3x CG",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20100,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇩 刚果（金）丨3x CD",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20166,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇦 加蓬丨3x GA",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20113,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇹🇩 乍得丨3x TD",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20144,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇦 摩洛哥丨3x MA",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13193,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇹🇳 突尼斯丨2x TN",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12703,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇱🇾 利比亚丨3x LY",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20101,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇰🇪 肯尼亚丨1x KE",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12716,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇷🇼 卢旺达丨2x RW",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13154,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇻 佛得角丨3x CV",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20102,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇦🇴 安哥拉丨3x AO",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13145,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇲 喀麦隆丨3x CM",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20103,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇧🇮 布隆迪丨3x BI",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20105,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇴 索马里丨3x SO",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20069,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇩🇯 吉布提丨3x DJ",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20110,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇲 冈比亚丨3x GM",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20118,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇳 几内亚丨3x GN",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20119,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇱🇸 莱索托丨3x LS",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20124,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇼 马拉维丨3x MW",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20130,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇳🇪 尼日尔丨3x NE",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20133,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇺🇬 乌干达丨3x UG",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20147,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇾🇹 马约特丨3x YT",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20151,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇿🇲 赞比亚丨3x ZM",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20152,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇸 南苏丹丨3x SS",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20172,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇨 塞舌尔丨3x SC",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20174,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇰🇲 科摩罗丨3x KM",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20175,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇳🇬 尼日利亚丨2x NG",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 12648,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇳🇬 尼日利亚住宅丨5x NG",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13184,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇿 莫桑比克丨3x MZ",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20161,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇺 毛里求斯丨2x MU",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13118,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇮 科特迪瓦丨3x CI",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20106,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇹🇿 坦桑尼亚丨5x TZ",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13171,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇿🇼 津巴布韦丨3x ZW",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20068,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇳 塞内加尔丨3x SN",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13194,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇧🇼 博茨瓦纳丨3x BW",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20109,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇳🇦 纳米比亚丨3x NA",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20131,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇱 塞拉利昂丨3x SL",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20139,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇿 斯威士兰丨3x SZ",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20142,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇱🇷 利比里亚丨3x LR",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20146,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇩🇿 阿尔及利亚丨3x DZ",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13157,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇬 马达加斯加丨3x MG",
+      "type": "shadowsocks",
+      "server": "acyqpcu5.epicgames.ink",
+      "server_port": 13173,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇶 赤道几内亚丨3x GQ",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20070,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇧🇫 布基纳法索丨3x BF",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20108,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇪🇷 厄立特里亚丨3x ER",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20111,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇪🇹 埃塞俄比亚丨3x ET",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20112,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇲🇷 毛里塔尼亚丨3x MR",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20128,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇫 中非共和国丨3x CF",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20157,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇬🇼 几内亚比绍丨3x GW",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20179,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇸🇹 圣多美和普林西比丨3x ST",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20140,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇦🇶 南极洲丨3x AQ",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20031,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "🇨🇳 中国大陆丨3x CN",
+      "type": "shadowsocks",
+      "server": "2bxntczz.epicgames.ink",
+      "server_port": 20180,
+      "method": "aes-128-gcm",
+      "password": "haMLMXirByn6rGVh",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=e7a492dd6ef7.microsoft.com"
+    },
+    {
+      "tag": "剩余流量：199.71 GB",
+      "type": "vless",
+      "server": "216.167.73.235",
+      "server_port": 30002,
+      "uuid": "492521d1-76cc-4758-8fa8-ff002127e42b",
+      "tls": {
+        "enabled": true,
+        "server_name": "learn.microsoft.com",
+        "insecure": false,
+        "reality": {
+          "enabled": true,
+          "public_key": "58ZQDXgVBPX_-WEiaBVnfz7aV-kpqCAjMAa2Zm7hPjk",
+          "short_id": "d0f24fbc88"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "tag": "距离下次重置剩余：18 天",
+      "type": "vless",
+      "server": "216.167.73.235",
+      "server_port": 30002,
+      "uuid": "492521d1-76cc-4758-8fa8-ff002127e42b",
+      "tls": {
+        "enabled": true,
+        "server_name": "learn.microsoft.com",
+        "insecure": false,
+        "reality": {
+          "enabled": true,
+          "public_key": "58ZQDXgVBPX_-WEiaBVnfz7aV-kpqCAjMAa2Zm7hPjk",
+          "short_id": "d0f24fbc88"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "tag": "套餐到期：2025-10-14",
+      "type": "vless",
+      "server": "216.167.73.235",
+      "server_port": 30002,
+      "uuid": "492521d1-76cc-4758-8fa8-ff002127e42b",
+      "tls": {
+        "enabled": true,
+        "server_name": "learn.microsoft.com",
+        "insecure": false,
+        "reality": {
+          "enabled": true,
+          "public_key": "58ZQDXgVBPX_-WEiaBVnfz7aV-kpqCAjMAa2Zm7hPjk",
+          "short_id": "d0f24fbc88"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "tag": "[0.25x]🇺🇸 美国|流媒体节点1",
+      "type": "vless",
+      "server": "216.167.73.235",
+      "server_port": 30002,
+      "uuid": "492521d1-76cc-4758-8fa8-ff002127e42b",
+      "tls": {
+        "enabled": true,
+        "server_name": "learn.microsoft.com",
+        "insecure": false,
+        "reality": {
+          "enabled": true,
+          "public_key": "58ZQDXgVBPX_-WEiaBVnfz7aV-kpqCAjMAa2Zm7hPjk",
+          "short_id": "d0f24fbc88"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "qq"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "tag": "[0.25x]🇺🇸 美国|流媒体节点2",
+      "type": "vless",
+      "server": "64.81.117.6",
+      "server_port": 30002,
+      "uuid": "492521d1-76cc-4758-8fa8-ff002127e42b",
+      "tls": {
+        "enabled": true,
+        "server_name": "learn.microsoft.com",
+        "insecure": false,
+        "reality": {
+          "enabled": true,
+          "public_key": "58ZQDXgVBPX_-WEiaBVnfz7aV-kpqCAjMAa2Zm7hPjk",
+          "short_id": "d0f24fbc88"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "edge"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "tag": "[1.0x]🇺🇸 美国|家宽Hawaiiantel|三网优化",
+      "type": "vless",
+      "server": "64.64.225.75",
+      "server_port": 30005,
+      "uuid": "492521d1-76cc-4758-8fa8-ff002127e42b",
+      "tls": {
+        "enabled": true,
+        "server_name": "www.ebay.com",
+        "insecure": false,
+        "reality": {
+          "enabled": true,
+          "public_key": "j_H86wZIMvHKOjsphhcCuu7XR0GS-if5nWehIIfotAU",
+          "short_id": "6ce526"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "edge"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "tag": "[0.2x]🇺🇸 美国|家宽Hawaiiantel",
+      "type": "vless",
+      "server": "72.253.143.246",
+      "server_port": 30005,
+      "uuid": "492521d1-76cc-4758-8fa8-ff002127e42b",
+      "tls": {
+        "enabled": true,
+        "server_name": "www.ebay.com",
+        "insecure": false,
+        "reality": {
+          "enabled": true,
+          "public_key": "j_H86wZIMvHKOjsphhcCuu7XR0GS-if5nWehIIfotAU",
+          "short_id": "6ce526"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "edge"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "tag": "[1.0x]🇺🇸 美国|福利家宽Frontier|动态ip",
+      "type": "vless",
+      "server": "216.40.86.225",
+      "server_port": 30001,
+      "uuid": "492521d1-76cc-4758-8fa8-ff002127e42b",
+      "tls": {
+        "enabled": true,
+        "server_name": "learn.microsoft.com",
+        "insecure": false,
+        "reality": {
+          "enabled": true,
+          "public_key": "GQfNnFHTQf9DeCgrT5UgdqTVjfxD011UZKJwcsthWAk",
+          "short_id": "d0f24fbc88"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "tag": "[1.0xjp 日本|福利家宽softbank|动态ip",
+      "type": "vless",
+      "server": "8.209.251.167",
+      "server_port": 20004,
+      "uuid": "492521d1-76cc-4758-8fa8-ff002127e42b",
+      "tls": {
+        "enabled": true,
+        "server_name": "www.ebay.com",
+        "insecure": false,
+        "reality": {
+          "enabled": true,
+          "public_key": "j_H86wZIMvHKOjsphhcCuu7XR0GS-if5nWehIIfotAU",
+          "short_id": "6ce526"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "qq"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "tag": "[1.0x]🇨🇳 台湾|福利家宽hinet|动态ip",
+      "type": "vless",
+      "server": "tw88.icmpmiao.cc",
+      "server_port": 23004,
+      "uuid": "492521d1-76cc-4758-8fa8-ff002127e42b",
+      "tls": {
+        "enabled": true,
+        "server_name": "learn.microsoft.com",
+        "insecure": false,
+        "reality": {
+          "enabled": true,
+          "public_key": "GQfNnFHTQf9DeCgrT5UgdqTVjfxD011UZKJwcsthWAk",
+          "short_id": "d0f24fbc88"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "safari"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "tag": "[1.0x]英国|福利家宽",
+      "type": "vless",
+      "server": "162.211.231.198",
+      "server_port": 44545,
+      "uuid": "492521d1-76cc-4758-8fa8-ff002127e42b",
+      "tls": {
+        "enabled": true,
+        "server_name": "learn.microsoft.com",
+        "insecure": false,
+        "reality": {
+          "enabled": true,
+          "public_key": "GQfNnFHTQf9DeCgrT5UgdqTVjfxD011UZKJwcsthWAk",
+          "short_id": "d0f24fbc88"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "safari"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "tag": "当出现较长时间error时，可尝试更新订阅链接",
+      "type": "vless",
+      "server": "107.172.99.78",
+      "server_port": 30004,
+      "uuid": "492521d1-76cc-4758-8fa8-ff002127e42b",
+      "tls": {
+        "enabled": true,
+        "server_name": "www.ebay.com",
+        "insecure": false,
+        "reality": {
+          "enabled": true,
+          "public_key": "j_H86wZIMvHKOjsphhcCuu7XR0GS-if5nWehIIfotAU",
+          "short_id": "6ce526"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "tag": "香港HKT",
+      "type": "shadowsocks",
+      "server": "air.alphatvapp.top",
+      "server_port": 36000,
+      "method": "chacha20-ietf-poly1305",
+      "password": "83222434-e725-4d97-acfd-69b97aaa1179"
+    },
+    {
+      "tag": "香港HGC",
+      "type": "shadowsocks",
+      "server": "air.alphatvapp.top",
+      "server_port": 36001,
+      "method": "chacha20-ietf-poly1305",
+      "password": "83222434-e725-4d97-acfd-69b97aaa1179"
+    },
+    {
+      "tag": "台湾Hinet",
+      "type": "shadowsocks",
+      "server": "air.alphatvapp.top",
+      "server_port": 36003,
+      "method": "chacha20-ietf-poly1305",
+      "password": "83222434-e725-4d97-acfd-69b97aaa1179"
+    },
+    {
+      "tag": "新加坡",
+      "type": "shadowsocks",
+      "server": "air.alphatvapp.top",
+      "server_port": 36004,
+      "method": "chacha20-ietf-poly1305",
+      "password": "83222434-e725-4d97-acfd-69b97aaa1179"
+    },
+    {
+      "tag": "日本",
+      "type": "shadowsocks",
+      "server": "air.alphatvapp.top",
+      "server_port": 36005,
+      "method": "chacha20-ietf-poly1305",
+      "password": "83222434-e725-4d97-acfd-69b97aaa1179"
+    },
+    {
+      "tag": "美国",
+      "type": "shadowsocks",
+      "server": "air.alphatvapp.top",
+      "server_port": 36006,
+      "method": "chacha20-ietf-poly1305",
+      "password": "83222434-e725-4d97-acfd-69b97aaa1179"
+    },
+    {
+      "tag": "🇭🇰 HK01-E1 0.2x",
+      "type": "trojan",
+      "server": "e1-east-hk-5140.nod3.org",
+      "server_port": 21101,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇭🇰 HK02-E2 0.2x",
+      "type": "trojan",
+      "server": "e1-east-0708.nod3.org",
+      "server_port": 21102,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇭🇰 HK03-S1 0.2x",
+      "type": "trojan",
+      "server": "s1-south-hk-5140.nod3.org",
+      "server_port": 21103,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇭🇰 HK04-S1 0.2x",
+      "type": "trojan",
+      "server": "s1-south-hk-5140.nod3.org",
+      "server_port": 21104,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇭🇰 HK05-GTM Peter专线",
+      "type": "trojan",
+      "server": "s-gtm-5515.nod3.org",
+      "server_port": 21108,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇭🇰 HK06-GTM Oilguy专线",
+      "type": "trojan",
+      "server": "s-gtm-5515.nod3.org",
+      "server_port": 21107,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇭🇰 HK07-S2",
+      "type": "trojan",
+      "server": "s2-sziplc-5515.nod3.org",
+      "server_port": 21105,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇭🇰 HK08-S2",
+      "type": "trojan",
+      "server": "s2-sziplc-5515.nod3.org",
+      "server_port": 21106,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇭🇰 HK09-S3",
+      "type": "trojan",
+      "server": "s3-sziplc-5515.nod3.org",
+      "server_port": 21107,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇭🇰 HK10-S3",
+      "type": "trojan",
+      "server": "s3-sziplc-5515.nod3.org",
+      "server_port": 21108,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇭🇰 HK11-S4",
+      "type": "trojan",
+      "server": "s4-sziplc-5515.nod3.org",
+      "server_port": 21107,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇭🇰 HK12-S4",
+      "type": "trojan",
+      "server": "s4-sziplc-5515.nod3.org",
+      "server_port": 21108,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇸🇬 SG01-S1 0.2x",
+      "type": "trojan",
+      "server": "s1-south-sg-5140.nod3.org",
+      "server_port": 21201,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇸🇬 SG02-S1 0.2x",
+      "type": "trojan",
+      "server": "s1-south-sg-5140.nod3.org",
+      "server_port": 21202,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇸🇬 SG03-S2",
+      "type": "trojan",
+      "server": "s2-sziplc-5515.nod3.org",
+      "server_port": 21203,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇸🇬 SG04-S3",
+      "type": "trojan",
+      "server": "s3-sziplc-5515.nod3.org",
+      "server_port": 21203,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇸🇬 SG05-S4",
+      "type": "trojan",
+      "server": "s4-sziplc-5515.nod3.org",
+      "server_port": 21203,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇸🇬 SG06-GTM",
+      "type": "trojan",
+      "server": "s-gtm-5515.nod3.org",
+      "server_port": 21204,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇯🇵 JP01-S1 0.2x",
+      "type": "trojan",
+      "server": "s1-south-jp-5140.nod3.org",
+      "server_port": 21301,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇯🇵 JP02-S1 0.2x",
+      "type": "trojan",
+      "server": "s1-south-jp-5140.nod3.org",
+      "server_port": 21302,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇯🇵 JP03-E2",
+      "type": "trojan",
+      "server": "e2-east-jp-0923.nod3.org",
+      "server_port": 21305,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇯🇵 JP04-E4",
+      "type": "trojan",
+      "server": "e4-east-jp-0923.nod3.org",
+      "server_port": 21306,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇺🇸 US01-S1 0.2x",
+      "type": "trojan",
+      "server": "s1-south-sg-5140.nod3.org",
+      "server_port": 21401,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇺🇸 US02-S1 0.2x",
+      "type": "trojan",
+      "server": "s1-south-sg-5140.nod3.org",
+      "server_port": 21402,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇺🇸 US03-E2",
+      "type": "trojan",
+      "server": "e2-east-us-0923.nod3.org",
+      "server_port": 21403,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇺🇸 US04-E4",
+      "type": "trojan",
+      "server": "e4-east-us-0923.nod3.org",
+      "server_port": 21404,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇨🇳 TW01-S1 0.2x",
+      "type": "trojan",
+      "server": "s1-south-tw-5140.nod3.org",
+      "server_port": 21501,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇨🇳 TW02-S1 0.2x",
+      "type": "trojan",
+      "server": "s1-south-tw-5140.nod3.org",
+      "server_port": 21502,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇨🇳 TW03-S2",
+      "type": "trojan",
+      "server": "s2-sziplc-5515.nod3.org",
+      "server_port": 21503,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇨🇳 TW04-S3",
+      "type": "trojan",
+      "server": "s3-sziplc-5515.nod3.org",
+      "server_port": 21503,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇨🇳 TW05-S4",
+      "type": "trojan",
+      "server": "s4-sziplc-5515.nod3.org",
+      "server_port": 21503,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇨🇳 TW06-GTM",
+      "type": "trojan",
+      "server": "s-gtm-5515.nod3.org",
+      "server_port": 21503,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇰🇷 KR01-E1",
+      "type": "trojan",
+      "server": "e1-east-hk-5140.nod3.org",
+      "server_port": 21604,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇰🇷 KR02-E2",
+      "type": "trojan",
+      "server": "e1-east-0708.nod3.org",
+      "server_port": 21605,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "🇭🇰 HK-TEST",
+      "type": "shadowsocks",
+      "server": "hkp-t01.as9929.uk",
+      "server_port": 22201,
+      "method": "2022-blake3-aes-256-gcm",
+      "password": "NzRmZWQwZjM1MDIxZjI3ZDA4ZDRjYTdhYjk4MmFkMDA=:NTU1OTU5MWUtYmQ5NS00ZjBjLWIyYWUtYmZiYTI5Nzc=",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=223.5.5.5;path=/"
+    },
+    {
+      "tag": "🇯🇵 JP-TEST",
+      "type": "shadowsocks",
+      "server": "jp-t01.as9929.uk",
+      "server_port": 22202,
+      "method": "2022-blake3-aes-256-gcm",
+      "password": "NzRmZWQwZjM1MDIxZjI3ZDA4ZDRjYTdhYjk4MmFkMDA=:NTU1OTU5MWUtYmQ5NS00ZjBjLWIyYWUtYmZiYTI5Nzc=",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=223.5.5.5;path=/"
+    },
+    {
+      "tag": "🇩🇪 DE-TEST 5x",
+      "type": "shadowsocks",
+      "server": "de-t01.as9929.uk",
+      "server_port": 22203,
+      "method": "2022-blake3-aes-256-gcm",
+      "password": "NzRmZWQwZjM1MDIxZjI3ZDA4ZDRjYTdhYjk4MmFkMDA=:NTU1OTU5MWUtYmQ5NS00ZjBjLWIyYWUtYmZiYTI5Nzc=",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=223.5.5.5;path=/"
+    },
+    {
+      "tag": "🇺🇸 US-TEST",
+      "type": "shadowsocks",
+      "server": "t-us01.as9929.uk",
+      "server_port": 22204,
+      "method": "2022-blake3-aes-256-gcm",
+      "password": "NzRmZWQwZjM1MDIxZjI3ZDA4ZDRjYTdhYjk4MmFkMDA=:NTU1OTU5MWUtYmQ5NS00ZjBjLWIyYWUtYmZiYTI5Nzc=",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=223.5.5.5;path=/"
+    },
+    {
+      "tag": "🇸🇬 SG-TEST",
+      "type": "shadowsocks",
+      "server": "sg-t01.as9929.uk",
+      "server_port": 22205,
+      "method": "2022-blake3-aes-256-gcm",
+      "password": "NzRmZWQwZjM1MDIxZjI3ZDA4ZDRjYTdhYjk4MmFkMDA=:NTU1OTU5MWUtYmQ5NS00ZjBjLWIyYWUtYmZiYTI5Nzc=",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=223.5.5.5;path=/"
+    },
+    {
+      "tag": "🇳🇱 NL-TEST 5x",
+      "type": "shadowsocks",
+      "server": "nl-t01.as9929.uk",
+      "server_port": 22206,
+      "method": "2022-blake3-aes-256-gcm",
+      "password": "NzRmZWQwZjM1MDIxZjI3ZDA4ZDRjYTdhYjk4MmFkMDA=:NTU1OTU5MWUtYmQ5NS00ZjBjLWIyYWUtYmZiYTI5Nzc=",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=223.5.5.5;path=/"
+    },
+    {
+      "tag": "🇨🇳 TW-TEST",
+      "type": "shadowsocks",
+      "server": "tw-t01.as9929.uk",
+      "server_port": 22207,
+      "method": "2022-blake3-aes-256-gcm",
+      "password": "NzRmZWQwZjM1MDIxZjI3ZDA4ZDRjYTdhYjk4MmFkMDA=:NTU1OTU5MWUtYmQ5NS00ZjBjLWIyYWUtYmZiYTI5Nzc=",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=223.5.5.5;path=/"
+    },
+    {
+      "tag": "🇰🇷 KR-TEST",
+      "type": "shadowsocks",
+      "server": "kr-t01.as9929.uk",
+      "server_port": 22208,
+      "method": "2022-blake3-aes-256-gcm",
+      "password": "NzRmZWQwZjM1MDIxZjI3ZDA4ZDRjYTdhYjk4MmFkMDA=:NTU1OTU5MWUtYmQ5NS00ZjBjLWIyYWUtYmZiYTI5Nzc=",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=223.5.5.5;path=/"
+    },
+    {
+      "tag": "🇭🇰 HK-TEST-1",
+      "type": "trojan",
+      "server": "cssydcc.nod3.org",
+      "server_port": 22125,
+      "password": "5559591e-bd95-4f0c-b2ae-bfba297717b0",
+      "tls": {
+        "enabled": true,
+        "server_name": "mmbiz.qpic.cn",
+        "insecure": true
+      }
+    }
   ],
   "inbounds": [
     {
       "type": "tun",
-      "address": ["172.19.0.0/30","fdfe:dcba:9876::0/126"],
+      "address": [
+        "172.19.0.0/30",
+        "fdfe:dcba:9876::0/126"
+      ],
       "stack": "mixed",
       "auto_route": true,
-      "platform": { "http_proxy": { "enabled": true, "server": "127.0.0.1", "server_port": 7890 } }
+      "platform": {
+        "http_proxy": {
+          "enabled": true,
+          "server": "127.0.0.1",
+          "server_port": 7890
+        }
+      }
     },
-    { "type": "mixed", "listen": "127.0.0.1", "listen_port": 7890 }
+    {
+      "type": "mixed",
+      "listen": "127.0.0.1",
+      "listen_port": 7890
+    }
   ],
   "experimental": {
     "clash_api": {
@@ -142,7 +5142,14 @@
       "external_ui_download_url": "https://ghfast.top/https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip",
       "external_ui_download_detour": "direct"
     },
-    "cache_file": { "enabled": true, "store_fakeip": true }
+    "cache_file": {
+      "enabled": true,
+      "store_fakeip": true
+    }
   },
-  "log": { "disabled": false, "level": "info", "timestamp": true }
+  "log": {
+    "disabled": false,
+    "level": "info",
+    "timestamp": true
+  }
 }
