@@ -1,8 +1,8 @@
 {
   "dns": {
     "servers": [
-      { "tag": "google", "type": "https", "server": "8.8.8.8", "detour": "proxy" },
-      { "tag": "ali", "type": "https", "server": "223.5.5.5" },
+      { "tag": "google", "type": "https", "server": "https://dns.google/dns-query", "detour": "proxy" },
+      { "tag": "ali", "type": "https", "server": "https://dns.alidns.com/dns-query" },
       { "tag": "fakeip", "type": "fakeip", "inet4_range": "198.18.0.0/15", "inet6_range": "fc00::/18" }
     ],
     "rules": [
@@ -68,32 +68,26 @@
         "tag": "ai_domain",
         "type": "inline",
         "rules": [
-          // OpenAI 全系列
           { "domain_suffix": "openai.com" },
           { "domain_suffix": "chatgpt.com" },
           { "domain_suffix": "oaiusercontent.com" },
           { "domain_suffix": "oaistatic.com" },
           { "domain_suffix": "openai.azure.com" },
 
-          // Perplexity
           { "domain_suffix": "perplexity.ai" },
           { "domain_suffix": "api.perplexity.ai" },
           { "domain_suffix": "pplx.ai" },
 
-          // Claude (Anthropic)
           { "domain_suffix": "anthropic.com" },
           { "domain_suffix": "api.anthropic.com" },
           { "domain_suffix": "claude.ai" },
 
-          // OpenRouter
           { "domain_suffix": "openrouter.ai" },
           { "domain_suffix": "api.openrouter.ai" },
 
-          // XAI
           { "domain_suffix": "x.ai" },
           { "domain_suffix": "api.x.ai" },
 
-          // Poe
           { "domain_suffix": "poe.com" },
           { "domain_suffix": "quoracdn.net" }
         ]
